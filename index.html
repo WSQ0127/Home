@@ -957,32 +957,47 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
-  // 获取一言卡片元素
-const hitokotoCard = document.getElementById('hitokoto-card');
-const hitokotoLoading = document.getElementById('hitokoto-loading');
 
-// 点击刷新一言
-hitokotoCard.addEventListener('click', fetchHitokoto);
+    // 获取元素
+    const hitokotoCard = document.getElementById('hitokoto-card');
+    const hitokotoLoading = document.getElementById('hitokoto-loading');
 
-// 封装获取一言的函数
-function fetchHitokoto() {
-  // 显示加载动画
-  hitokotoLoading.classList.add('active');
-  
-  fetch('https://v1.hitokoto.cn')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('hitokoto').textContent = data.hitokoto;
-      document.getElementById('hitokoto-from').textContent = '—— ' + (data.from || '未知');
-    })
-    .catch(() => {
-      document.getElementById('hitokoto').textContent = '获取一言失败';
-    })
-    .finally(() => {
-      // 隐藏加载动画
-      hitokotoLoading.classList.remove('active');
-    });
-}
+    // 获取一言函数
+    function fetchHitokoto() {
+    // 显示加载动画
+    hitokotoLoading.classList.add('active');
+    
+    // 临时隐藏内容
+    document.getElementById('hitokoto').style.opacity = '0';
+    document.getElementById('hitokoto-from').style.opacity = '0';
+    
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+        document.getElementById('hitokoto').textContent = data.hitokoto;
+        document.getElementById('hitokoto-from').textContent = '—— ' + (data.from || '未知');
+        })
+        .catch(() => {
+        document.getElementById('hitokoto').textContent = '获取一言失败';
+        document.getElementById('hitokoto-from').textContent = '';
+        })
+        .finally(() => {
+        // 隐藏加载动画
+        hitokotoLoading.classList.remove('active');
+        // 显示内容
+        document.getElementById('hitokoto').style.opacity = '1';
+        document.getElementById('hitokoto-from').style.opacity = '1';
+        });
+    }
+
+    // 页面加载完成后自动调用 fetchHitokoto
+    window.onload = function() {
+    fetchHitokoto();
+    };
+
+    // 点击卡片仍然可以刷新一言（保留原有功能）
+    hitokotoCard.addEventListener('click', fetchHitokoto);
+
     // 社交图标悬停效果
     const socialItems = document.querySelectorAll('.social-item');
     socialItems.forEach(item => {
