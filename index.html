@@ -851,16 +851,16 @@
   <div class="right-content">
     <!-- 一言和时间 -->
     <div class="hitokoto-clock">
-      <div class="hitokoto-container card card-3d">
-        <i class="fas fa-sync-alt refresh-icon" id="refresh-hitokoto"></i>
-        <div class="loading" id="hitokoto-loading">
-          <div class="loading-spinner"></div>
-        </div>
-        <div class="hitokoto-text" id="hitokoto">正在加载一言...</div>
-        <div class="hitokoto-from" id="hitokoto-from"></div>
-      </div>
+        <div class="hitokoto-container card" id="hitokoto-card">
+            <i class="fas fa-sync-alt refresh-icon"></i>
+            <div class="loading" id="hitokoto-loading">
+              <div class="loading-spinner"></div>
+            </div>
+            <div class="hitokoto-text" id="hitokoto">正在加载一言...</div>
+            <div class="hitokoto-from" id="hitokoto-from"></div>
+          </div>
       
-      <div class="clock-container card card-3d">
+      <div class="clock-container card">
         <div class="clock-time" id="clock-time"></div>
         <div class="clock-date" id="clock-date"></div>
       </div>
@@ -869,19 +869,19 @@
     <!-- 网站链接区域 -->
     <h2 class="section-title">我的网站</h2>
     <div class="website-grid">
-      <a href="https://blog.wsq127.top" target="_blank" class="website-card card card-3d">
+      <a href="https://blog.wsq127.top" target="_blank" class="website-card card">
         <h3>个人博客</h3>
         <p>记录技术与生活，分享学习心得与开发经验</p>
       </a>
-      <a href="https://image.wsq127.top" target="_blank" class="website-card card card-3d">
+      <a href="https://image.wsq127.top" target="_blank" class="website-card card">
         <h3>图床</h3>
         <p>稳定快速的图片托管服务，支持多种图片格式</p>
       </a>
-      <a href="https://web.wsq127.top/" target="_blank" class="website-card card card-3d">
+      <a href="https://web.wsq127.top/" target="_blank" class="website-card card">
         <h3>资源导航</h3>
         <p>精心整理的实用资源合集，提高工作效率</p>
       </a>
-      <a href="https://wsq127.top/" target="_blank" class="website-card card card-3d">
+      <a href="https://wsq127.top/" target="_blank" class="website-card card">
         <h3>占位</h3>
         <p>占位</p>
       </a>
@@ -891,14 +891,14 @@
     <div class="friend-links">
       <h2 class="section-title">好友</h2>
       <div class="friend-grid">
-        <a href="https://qm.qq.com/q/34W5AAi000" target="_blank" class="friend-card card card-3d">
+        <a href="https://qm.qq.com/q/34W5AAi000" target="_blank" class="friend-card card">
           <img src="https://image.wsq127.top/file/AgACAgUAAyEGAASTTk8KAANgaEKJAAFxKsRN8pe1D1zdog_Yb-OgAAI5xTEbCgUYVl4atJGWC_qhAQADAgADeQADNgQ.png" alt="gMr" class="friend-avatar">
           <div class="friend-info">
             <div class="friend-name">517Group</div>
             <div class="friend-desc">欢迎加入 517Group OfficialⅠ喵！</div>
           </div>
         </a>
-        <a href="https://blog.517group.cn/" target="_blank" class="friend-card card card-3d">
+        <a href="https://blog.517group.cn/" target="_blank" class="friend-card card">
           <img src="https://blog.517group.cn/img/favicon.png" alt="祝馀宫" class="friend-avatar">
           <div class="friend-info">
             <div class="friend-name">祝馀宫</div>
@@ -921,8 +921,8 @@
           const y = e.clientY - rect.top;
           const centerX = rect.width / 2;
           const centerY = rect.height / 2;
-          const angleX = (y - centerY) / 15;
-          const angleY = (centerX - x) / 15;
+          const angleX = (y - centerY) / 30;
+          const angleY = (centerX - x) / 30;
           
           card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.02)`;
           card.style.boxShadow = `0 20px 40px rgba(0, 0, 0, 0.3)`;
@@ -957,20 +957,17 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
-    
-   // 一言功能
+  // 获取一言卡片元素
 const hitokotoCard = document.getElementById('hitokoto-card');
 const hitokotoLoading = document.getElementById('hitokoto-loading');
-const refreshBtn = document.getElementById('refresh-hitokoto');
+
+// 点击刷新一言
+hitokotoCard.addEventListener('click', fetchHitokoto);
 
 // 封装获取一言的函数
 function fetchHitokoto() {
   // 显示加载动画
   hitokotoLoading.classList.add('active');
-  
-  // 清空现有内容
-  document.getElementById('hitokoto').textContent = '加载中...';
-  document.getElementById('hitokoto-from').textContent = '';
   
   fetch('https://v1.hitokoto.cn')
     .then(response => response.json())
@@ -980,30 +977,12 @@ function fetchHitokoto() {
     })
     .catch(() => {
       document.getElementById('hitokoto').textContent = '获取一言失败';
-      document.getElementById('hitokoto-from').textContent = '';
     })
     .finally(() => {
       // 隐藏加载动画
       hitokotoLoading.classList.remove('active');
     });
 }
-
-// 初始加载一言
-fetchHitokoto();
-
-// 点击刷新按钮刷新一言
-refreshBtn.addEventListener('click', function(e) {
-  e.stopPropagation(); // 阻止事件冒泡
-  fetchHitokoto();
-});
-
-// 点击卡片也可以刷新一言
-hitokotoCard.addEventListener('click', function(e) {
-  // 只有当点击的不是刷新按钮时才执行
-  if (!e.target.closest('.refresh-icon')) {
-    fetchHitokoto();
-  }
-});
     // 社交图标悬停效果
     const socialItems = document.querySelectorAll('.social-item');
     socialItems.forEach(item => {
