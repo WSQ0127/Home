@@ -473,16 +473,29 @@
       opacity: 0.9;
     }
     
-    .friend-card {
-      display: flex;
-      align-items: center;
-      padding: 1.5rem;
-    }
-    
-    .friend-card:hover {
-      background: rgba(253, 121, 168, 0.15);
-      border-color: var(--accent-color);
-    }
+.friend-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  /* 移除固定宽度，或根据需要设置更合适的宽度 */
+  /* width: 500px; */
+  width: 450px;
+  margin: 0.5rem; /* 添加外边距以避免紧密贴合 */
+  box-sizing: border-box; /* 确保内边距和边框不会增加元素的总宽度 */
+}
+
+.friend-grid {
+  display: flex;
+  flex-wrap: wrap; /* 允许子元素换行 */
+  gap: 1rem; /* 设置子元素之间的间距 */
+}
+
+.friend-card:hover {
+  background: rgba(253, 121, 168, 0.15);
+  /* 假设 border-color 已在其他地方定义，这里不再重复 */
+  /* border-color: var(--accent-color); */
+}
+
     
     .friend-avatar {
       width: 56px;
@@ -820,7 +833,7 @@
         <img src="https://image.wsq127.top/file/AgACAgUAAyEGAASTTk8KAANaaEGm2UEWnglQHzO9Fx25yB5sBwgAAnXGMRsKBRBW09E9V0a5Ra8BAAMCAAN4AAM2BA.png" alt="头像" class="avatar">
     </div>
     <h1>Sci_qud</h1>
-    <div class="subtitle">热爱技术 & 分享创造<br>欢迎来到我的小站</div>
+    <div class="subtitle">欢迎来到我的主页喵！</div>
     
     <!-- 社交链接 -->
     <div class="social-links">
@@ -902,7 +915,7 @@
           <img src="https://blog.517group.cn/img/favicon.png" alt="祝馀宫" class="friend-avatar">
           <div class="friend-info">
             <div class="friend-name">祝馀宫</div>
-            <div class="friend-desc"></div>
+            <div class="friend-desc">其状如韭而青华，食之不饥</div>
           </div>
         </a>
       </div>
