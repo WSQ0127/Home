@@ -840,14 +840,10 @@
         <i class="fas fa-code"></i>
         <span>洛谷</span>
         </a>
-        <a href="https:/github.com/WSQ0127" target="_blank" class="social-item">
+        <a href="https://github.com/WSQ0127" target="_blank" class="social-item">
         <i class="fab fa-github"></i>
         <span>GitHub</span>
         </a>
-        <a href="https://space.bilibili.com/669252561?spm_id_from=333.1007.0.0" target="_blank" class="social-item">
-        <i class="fab fa-bilibili"></i>
-        <span>Bilibili</span>
-    </a>
 </div>
   </div>
   
@@ -983,51 +979,52 @@
     setInterval(updateClock, 1000);
     updateClock();
     
-    // 一言功能
-    const hitokotoCard = document.getElementById('hitokoto-card');
-    const hitokotoLoading = document.getElementById('hitokoto-loading');
-    const refreshBtn = document.getElementById('refresh-hitokoto');
-    
-    function fetchHitokoto() {
-      hitokotoLoading.classList.add('active');
-      
-      fetch('https://v1.hitokoto.cn')
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('hitokoto').textContent = data.hitokoto;
-          document.getElementById('hitokoto-from').textContent = '—— ' + (data.from || '未知');
-          
-          // 添加淡入动画
-          document.getElementById('hitokoto').style.animation = 'fadeIn 0.6s ease-out';
-          document.getElementById('hitokoto-from').style.animation = 'fadeIn 0.6s ease-out 0.2s';
-          
-          // 动画结束后移除样式
-          setTimeout(() => {
-            document.getElementById('hitokoto').style.animation = '';
-            document.getElementById('hitokoto-from').style.animation = '';
-          }, 1000);
-        })
-        .catch(() => {
-          document.getElementById('hitokoto').textContent = '获取一言失败';
-          document.getElementById('hitokoto-from').textContent = '';
-        })
-        .finally(() => {
-          hitokotoLoading.classList.remove('active');
-        });
-    }
-    
-    // 初始加载一言
-    fetchHitokoto();
-    
-    // 点击刷新一言
-    refreshBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      fetchHitokoto();
+   // 一言功能
+const hitokotoCard = document.getElementById('hitokoto-card');
+const hitokotoLoading = document.getElementById('hitokoto-loading');
+const refreshBtn = document.getElementById('refresh-hitokoto');
+
+// 封装获取一言的函数
+function fetchHitokoto() {
+  // 显示加载动画
+  hitokotoLoading.classList.add('active');
+  
+  // 清空现有内容
+  document.getElementById('hitokoto').textContent = '加载中...';
+  document.getElementById('hitokoto-from').textContent = '';
+  
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('hitokoto').textContent = data.hitokoto;
+      document.getElementById('hitokoto-from').textContent = '—— ' + (data.from || '未知');
+    })
+    .catch(() => {
+      document.getElementById('hitokoto').textContent = '获取一言失败';
+      document.getElementById('hitokoto-from').textContent = '';
+    })
+    .finally(() => {
+      // 隐藏加载动画
+      hitokotoLoading.classList.remove('active');
     });
-    
-    // 点击卡片也可以刷新一言
-    hitokotoCard.addEventListener('click', fetchHitokoto);
-    
+}
+
+// 初始加载一言
+fetchHitokoto();
+
+// 点击刷新按钮刷新一言
+refreshBtn.addEventListener('click', function(e) {
+  e.stopPropagation(); // 阻止事件冒泡
+  fetchHitokoto();
+});
+
+// 点击卡片也可以刷新一言
+hitokotoCard.addEventListener('click', function(e) {
+  // 只有当点击的不是刷新按钮时才执行
+  if (!e.target.closest('.refresh-icon')) {
+    fetchHitokoto();
+  }
+});
     // 社交图标悬停效果
     const socialItems = document.querySelectorAll('.social-item');
     socialItems.forEach(item => {
