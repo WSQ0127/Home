@@ -984,7 +984,7 @@
     document.getElementById('hitokoto').style.opacity = '0';
     document.getElementById('hitokoto-from').style.opacity = '0';
     
-    fetch('https://api.nxvav.cn/api/yiyan')
+    fetch('https://v1.hitokoto.cn')
         .then(response => response.json())
         .then(data => {
         document.getElementById('hitokoto').textContent = data.hitokoto;
